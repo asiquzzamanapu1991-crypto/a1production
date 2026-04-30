@@ -760,6 +760,133 @@
     .cinema-header { padding: 14px 20px; }
   }
 
+
+/* VIDEO MODAL */
+.vm-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.96);
+  flex-direction: column;
+  overflow-y: auto;
+}
+.vm-overlay.open { display: flex; }
+
+.vm-header {
+  position: sticky; top: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 40px;
+  background: rgba(8,8,8,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  z-index: 10;
+}
+.vm-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 4px; color: var(--gold);
+  display: flex; align-items: center; gap: 14px;
+}
+.vm-title span { color: var(--text); font-size: 14px; letter-spacing: 2px; font-family: 'Barlow', sans-serif; font-weight: 300; }
+.vm-close {
+  background: none; border: 1px solid rgba(201,168,76,0.3);
+  color: var(--muted); font-size: 22px; cursor: pointer;
+  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+}
+.vm-close:hover { border-color: var(--gold); color: var(--gold); }
+
+.vm-player-wrap {
+  display: none; padding: 32px 40px 0;
+}
+.vm-player-wrap.active { display: block; }
+.vm-player-wrap iframe {
+  width: 100%; aspect-ratio: 16/9; border: none;
+  border-top: 2px solid var(--gold);
+}
+.vm-player-close {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 16px; background: none; border: none;
+  color: var(--muted); font-family: 'Barlow', sans-serif;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  cursor: pointer; transition: color 0.3s;
+}
+.vm-player-close:hover { color: var(--gold); }
+
+.vm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 3px;
+  padding: 32px 40px 60px;
+}
+
+.vm-card {
+  cursor: pointer; position: relative; overflow: hidden;
+  background: #0d0d0d;
+  transition: transform 0.3s;
+}
+.vm-card:hover { transform: scale(1.02); z-index: 2; }
+
+.vm-thumb {
+  position: relative; aspect-ratio: 16/9; overflow: hidden;
+}
+.vm-thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s;
+  display: block;
+}
+.vm-card:hover .vm-thumb img { transform: scale(1.06); }
+
+.vm-play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.3);
+  opacity: 0; transition: opacity 0.3s;
+}
+.vm-card:hover .vm-play { opacity: 1; }
+.vm-play-tri {
+  width: 0; height: 0;
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  border-left: 28px solid var(--gold);
+  margin-left: 6px;
+  filter: drop-shadow(0 0 12px rgba(201,168,76,0.8));
+}
+
+.vm-card-label {
+  padding: 10px 14px;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted);
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.vm-card.playing .vm-card-label { color: var(--gold); }
+.vm-card.playing .vm-thumb::after {
+  content: '▶ NOW PLAYING';
+  position: absolute; top: 8px; left: 8px;
+  background: var(--gold); color: #000;
+  font-size: 9px; letter-spacing: 2px; font-weight: 700;
+  padding: 4px 8px;
+}
+
+/* Scan line on modal */
+.vm-scanlines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1001;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+}
+
+/* STUDIO */
+.studio { background: var(--dark); }
+.studio-drive {
+  border: 1px solid rgba(201,168,76,0.15);
+  overflow: hidden;
+}
+.studio-drive-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+  background: var(--dark2);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted);
+}
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
 </style>
 </head>
 <body>
@@ -776,6 +903,7 @@
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#studio">Studio</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#about">About</a></li>
   </ul>
@@ -958,6 +1086,26 @@
         <div class="portfolio-name">Product Launch</div>
       </div>
     </div>
+  </div>
+</section>
+
+
+<!-- STUDIO -->
+<section class="studio" id="studio">
+  <div class="section-label reveal">Behind The Scenes</div>
+  <h2 class="section-title reveal">Our <span style="color:var(--gold)">Studio</span></h2>
+  <p class="reveal" style="color:var(--muted); max-width:480px; margin-top:12px; font-size:15px; line-height:1.8; margin-bottom:48px;">Step inside A1 Production — where every frame begins.</p>
+  
+  <div class="studio-drive reveal">
+    <div class="studio-drive-header">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L2 7v6l8 5 8-5V7L10 2z" stroke="var(--gold)" stroke-width="1.2" stroke-linejoin="round"/></svg>
+      <span>Studio Gallery — A1 Production</span>
+    </div>
+    <iframe 
+      src="https://drive.google.com/embeddedfolderview?id=1JHlmcZ1XE1txv6DoxZsUKYBab5VJWBzs#grid" 
+      style="width:100%; height:520px; border:none; background:#000;"
+      title="A1 Production Studio Photos">
+    </iframe>
   </div>
 </section>
 
@@ -1303,6 +1451,168 @@ document.addEventListener('keydown', e => {
 document.getElementById('cinemaModal').addEventListener('click', function(e) {
   if (e.target === this) closeCinema();
 });
+</script>
+
+
+<!-- VIDEO MODAL -->
+<div class="vm-overlay" id="videoModal">
+  <div class="vm-scanlines"></div>
+  <div class="vm-header">
+    <div class="vm-title">
+      A1 <span>/ Film & Video Production</span>
+    </div>
+    <button class="vm-close" onclick="closeVideoModal()">✕</button>
+  </div>
+  <div class="vm-player-wrap" id="vmPlayer">
+    <iframe id="vmIframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    <button class="vm-player-close" onclick="closePlayer()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to all videos
+    </button>
+  </div>
+  <div class="vm-grid">
+    
+        <div class="vm-card" onclick="playVideo('mwMXMQ7at7E')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/mwMXMQ7at7E/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/mwMXMQ7at7E/hqdefault.jpg'"
+                 alt="Video 1" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 01</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('X2rRl9Dj21w')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/X2rRl9Dj21w/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/X2rRl9Dj21w/hqdefault.jpg'"
+                 alt="Video 2" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 02</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('1jS-EVq0UqI')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/1jS-EVq0UqI/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/1jS-EVq0UqI/hqdefault.jpg'"
+                 alt="Video 3" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 03</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('hAIvmKxaAIg')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/hAIvmKxaAIg/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/hAIvmKxaAIg/hqdefault.jpg'"
+                 alt="Video 4" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 04</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('9bEsYh_7wz4')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/9bEsYh_7wz4/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/9bEsYh_7wz4/hqdefault.jpg'"
+                 alt="Video 5" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 05</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('jExuaFH0Fck')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/jExuaFH0Fck/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/jExuaFH0Fck/hqdefault.jpg'"
+                 alt="Video 6" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 06</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('j_HBIQ14gT8')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/j_HBIQ14gT8/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/j_HBIQ14gT8/hqdefault.jpg'"
+                 alt="Video 7" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 07</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('QyjHIUvuBfk')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/QyjHIUvuBfk/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/QyjHIUvuBfk/hqdefault.jpg'"
+                 alt="Video 8" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 08</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('Lb9fLVjXGl4')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/Lb9fLVjXGl4/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/Lb9fLVjXGl4/hqdefault.jpg'"
+                 alt="Video 9" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 09</div>
+        </div>
+        <div class="vm-card" onclick="playVideo('vnYyk_LfpSg')">
+          <div class="vm-thumb">
+            <img src="https://img.youtube.com/vi/vnYyk_LfpSg/maxresdefault.jpg" 
+                 onerror="this.src='https://img.youtube.com/vi/vnYyk_LfpSg/hqdefault.jpg'"
+                 alt="Video 10" loading="lazy">
+            <div class="vm-play">
+              <div class="vm-play-tri"></div>
+            </div>
+          </div>
+          <div class="vm-card-label">Video 10</div>
+        </div>
+  </div>
+</div>
+
+<script>
+  function openVideoModal() {
+    document.getElementById('videoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeVideoModal() {
+    closePlayer();
+    document.getElementById('videoModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function playVideo(videoId) {
+    const wrap = document.getElementById('vmPlayer');
+    const iframe = document.getElementById('vmIframe');
+    iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+    wrap.classList.add('active');
+    wrap.scrollIntoView({behavior:'smooth'});
+    document.querySelectorAll('.vm-card').forEach(c => c.classList.remove('playing'));
+    event.currentTarget.classList.add('playing');
+  }
+  function closePlayer() {
+    const wrap = document.getElementById('vmPlayer');
+    document.getElementById('vmIframe').src = '';
+    wrap.classList.remove('active');
+    document.querySelectorAll('.vm-card').forEach(c => c.classList.remove('playing'));
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeVideoModal();
+  });
 </script>
 
 </body>
